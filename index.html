@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -35,11 +37,19 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet-measure.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
         <script src="data/60min_1.js"></script>
         <script src="data/Zaklad_2.js"></script>
         <script src="data/AvgFY2023_3.js"></script>
-        <script src="data/Avg1H2023_4.js"></script>
+        <script src="data/Avg2H2023_4.js"></script>
         <script src="data/Avg4Q2023_5.js"></script>
+        <script src="data/Stycze24_6.js"></script>
+        <script src="data/ZmianaLutyStycze24_7.js"></script>
+        <script src="data/Luty24_8.js"></script>
+        <script src="data/ZmianaMarzecLuty24_9.js"></script>
+        <script src="data/Marzec24_10.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -55,10 +65,11 @@
                 fillOpacity: 1
               });
             }
+            highlightLayer.openPopup();
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[50.93304367868267,15.725885209977388],[51.8117238403516,17.947865422779454]]);
+        }).fitBounds([[50.63957585672452,14.934951214978927],[52.09589660375191,18.61753839966534]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -119,6 +130,13 @@
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
                         }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -194,6 +212,13 @@
                             e.target._eventParents[i].resetStyle(e.target);
                         }
                     }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
                 },
                 mouseover: highlightFeature,
             });
@@ -212,7 +237,7 @@
         function style_Zaklad_2_0() {
             return {
                 pane: 'pane_Zaklad_2',
-                radius: 12.000000000000002,
+                radius: 12.0,
                 opacity: 1,
                 color: 'rgba(255,35,35,1.0)',
                 dashArray: '',
@@ -253,6 +278,13 @@
                             e.target._eventParents[i].resetStyle(e.target);
                         }
                     }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
                 },
                 mouseover: highlightFeature,
             });
@@ -286,10 +318,26 @@
         }
 
         function style_AvgFY2023_3_0(feature) {
-            if (feature.properties['średnia FY23'] >= 0.003000 && feature.properties['średnia FY23'] <= 100.000000 ) {
+            if (feature.properties['średnia FY23'] >= 0.000000 && feature.properties['średnia FY23'] <= 0.001000 ) {
                 return {
                 pane: 'pane_AvgFY2023_3',
-                radius: 4.0,
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia FY23'] >= 0.001000 && feature.properties['średnia FY23'] <= 25.000000 ) {
+                return {
+                pane: 'pane_AvgFY2023_3',
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -298,14 +346,46 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(52,0,148,1.0)',
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia FY23'] >= 25.000000 && feature.properties['średnia FY23'] <= 50.000000 ) {
+                return {
+                pane: 'pane_AvgFY2023_3',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia FY23'] >= 50.000000 && feature.properties['średnia FY23'] <= 100.000000 ) {
+                return {
+                pane: 'pane_AvgFY2023_3',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
                 interactive: true,
             }
             }
             if (feature.properties['średnia FY23'] >= 100.000000 && feature.properties['średnia FY23'] <= 200.000000 ) {
                 return {
                 pane: 'pane_AvgFY2023_3',
-                radius: 10.666666666666668,
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -314,14 +394,14 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(52,0,148,1.0)',
+                fillColor: 'rgba(204,187,105,1.0)',
                 interactive: true,
             }
             }
-            if (feature.properties['średnia FY23'] >= 200.000000 && feature.properties['średnia FY23'] <= 300.000000 ) {
+            if (feature.properties['średnia FY23'] >= 200.000000 && feature.properties['średnia FY23'] <= 506.113000 ) {
                 return {
                 pane: 'pane_AvgFY2023_3',
-                radius: 17.333333333333336,
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -330,23 +410,7 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(52,0,148,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['średnia FY23'] >= 300.000000 && feature.properties['średnia FY23'] <= 341.841667 ) {
-                return {
-                pane: 'pane_AvgFY2023_3',
-                radius: 24.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(52,0,148,1.0)',
+                fillColor: 'rgba(255,234,70,1.0)',
                 interactive: true,
             }
             }
@@ -370,14 +434,20 @@
             },
         });
         bounds_group.addLayer(layer_AvgFY2023_3);
-        map.addLayer(layer_AvgFY2023_3);
-        function pop_Avg1H2023_4(feature, layer) {
+        function pop_Avg2H2023_4(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
                         }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -409,11 +479,27 @@
             popup.setContent(updatedContent);
         }
 
-        function style_Avg1H2023_4_0(feature) {
-            if (feature.properties['średnia H2 2023'] >= 0.000000 && feature.properties['średnia H2 2023'] <= 100.000000 ) {
+        function style_Avg2H2023_4_0(feature) {
+            if (feature.properties['średnia H2 2023'] >= 0.000000 && feature.properties['średnia H2 2023'] <= 0.001000 ) {
                 return {
-                pane: 'pane_Avg1H2023_4',
-                radius: 4.0,
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia H2 2023'] >= 0.001000 && feature.properties['średnia H2 2023'] <= 25.000000 ) {
+                return {
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -422,14 +508,46 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(255,0,148,1.0)',
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia H2 2023'] >= 25.000000 && feature.properties['średnia H2 2023'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia H2 2023'] >= 50.000000 && feature.properties['średnia H2 2023'] <= 100.000000 ) {
+                return {
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
                 interactive: true,
             }
             }
             if (feature.properties['średnia H2 2023'] >= 100.000000 && feature.properties['średnia H2 2023'] <= 200.000000 ) {
                 return {
-                pane: 'pane_Avg1H2023_4',
-                radius: 10.666666666666668,
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -438,14 +556,14 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(255,0,148,1.0)',
+                fillColor: 'rgba(204,187,105,1.0)',
                 interactive: true,
             }
             }
-            if (feature.properties['średnia H2 2023'] >= 200.000000 && feature.properties['średnia H2 2023'] <= 300.000000 ) {
+            if (feature.properties['średnia H2 2023'] >= 200.000000 && feature.properties['średnia H2 2023'] <= 506.113000 ) {
                 return {
-                pane: 'pane_Avg1H2023_4',
-                radius: 17.333333333333336,
+                pane: 'pane_Avg2H2023_4',
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -454,46 +572,30 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(255,0,148,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['średnia H2 2023'] >= 300.000000 && feature.properties['średnia H2 2023'] <= 381.125000 ) {
-                return {
-                pane: 'pane_Avg1H2023_4',
-                radius: 24.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(255,0,148,1.0)',
+                fillColor: 'rgba(255,234,70,1.0)',
                 interactive: true,
             }
             }
         }
-        map.createPane('pane_Avg1H2023_4');
-        map.getPane('pane_Avg1H2023_4').style.zIndex = 404;
-        map.getPane('pane_Avg1H2023_4').style['mix-blend-mode'] = 'normal';
-        var layer_Avg1H2023_4 = new L.geoJson(json_Avg1H2023_4, {
+        map.createPane('pane_Avg2H2023_4');
+        map.getPane('pane_Avg2H2023_4').style.zIndex = 404;
+        map.getPane('pane_Avg2H2023_4').style['mix-blend-mode'] = 'normal';
+        var layer_Avg2H2023_4 = new L.geoJson(json_Avg2H2023_4, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Avg1H2023_4',
-            layerName: 'layer_Avg1H2023_4',
-            pane: 'pane_Avg1H2023_4',
-            onEachFeature: pop_Avg1H2023_4,
+            dataVar: 'json_Avg2H2023_4',
+            layerName: 'layer_Avg2H2023_4',
+            pane: 'pane_Avg2H2023_4',
+            onEachFeature: pop_Avg2H2023_4,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_Avg1H2023_4_0(feature));
+                return L.circleMarker(latlng, style_Avg2H2023_4_0(feature));
             },
         });
-        bounds_group.addLayer(layer_Avg1H2023_4);
+        bounds_group.addLayer(layer_Avg2H2023_4);
         function pop_Avg4Q2023_5(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -501,6 +603,13 @@
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
                         }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
                     }
                 },
                 mouseover: highlightFeature,
@@ -535,10 +644,26 @@
         }
 
         function style_Avg4Q2023_5_0(feature) {
-            if (feature.properties['średnia Q4 2023'] >= 0.000000 && feature.properties['średnia Q4 2023'] <= 100.000000 ) {
+            if (feature.properties['średnia Q4 2023'] >= 0.000000 && feature.properties['średnia Q4 2023'] <= 0.001000 ) {
                 return {
                 pane: 'pane_Avg4Q2023_5',
-                radius: 4.0,
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia Q4 2023'] >= 0.001000 && feature.properties['średnia Q4 2023'] <= 25.000000 ) {
+                return {
+                pane: 'pane_Avg4Q2023_5',
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -547,14 +672,46 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(0,99,76,1.0)',
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia Q4 2023'] >= 25.000000 && feature.properties['średnia Q4 2023'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Avg4Q2023_5',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['średnia Q4 2023'] >= 50.000000 && feature.properties['średnia Q4 2023'] <= 100.000000 ) {
+                return {
+                pane: 'pane_Avg4Q2023_5',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
                 interactive: true,
             }
             }
             if (feature.properties['średnia Q4 2023'] >= 100.000000 && feature.properties['średnia Q4 2023'] <= 200.000000 ) {
                 return {
                 pane: 'pane_Avg4Q2023_5',
-                radius: 9.0,
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -563,14 +720,14 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(0,99,76,1.0)',
+                fillColor: 'rgba(204,187,105,1.0)',
                 interactive: true,
             }
             }
-            if (feature.properties['średnia Q4 2023'] >= 200.000000 && feature.properties['średnia Q4 2023'] <= 300.000000 ) {
+            if (feature.properties['średnia Q4 2023'] >= 200.000000 && feature.properties['średnia Q4 2023'] <= 406.113333 ) {
                 return {
                 pane: 'pane_Avg4Q2023_5',
-                radius: 14.0,
+                radius: 6.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,0.0)',
                 dashArray: '',
@@ -579,39 +736,7 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(0,99,76,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['średnia Q4 2023'] >= 300.000000 && feature.properties['średnia Q4 2023'] <= 400.000000 ) {
-                return {
-                pane: 'pane_Avg4Q2023_5',
-                radius: 19.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(0,99,76,1.0)',
-                interactive: true,
-            }
-            }
-            if (feature.properties['średnia Q4 2023'] >= 400.000000 && feature.properties['średnia Q4 2023'] <= 406.113333 ) {
-                return {
-                pane: 'pane_Avg4Q2023_5',
-                radius: 24.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(0,99,76,1.0)',
+                fillColor: 'rgba(255,234,70,1.0)',
                 interactive: true,
             }
             }
@@ -635,6 +760,810 @@
             },
         });
         bounds_group.addLayer(layer_Avg4Q2023_5);
+        function pop_Stycze24_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Podmiot zbywający</th>\
+                        <td>' + (feature.properties['Podmiot zbywający'] !== null ? autolinker.link(feature.properties['Podmiot zbywający'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adres podmioty zbywającego</th>\
+                        <td>' + (feature.properties['Adres podmioty zbywającego'] !== null ? autolinker.link(feature.properties['Adres podmioty zbywającego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Odbiorca faktury</th>\
+                        <td>' + (feature.properties['Odbiorca faktury'] !== null ? autolinker.link(feature.properties['Odbiorca faktury'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lat</th>\
+                        <td>' + (feature.properties['Lat'] !== null ? autolinker.link(feature.properties['Lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Long</th>\
+                        <td>' + (feature.properties['Long'] !== null ? autolinker.link(feature.properties['Long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sty 24</th>\
+                        <td>' + (feature.properties['sty 24'] !== null ? autolinker.link(feature.properties['sty 24'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Stycze24_6_0(feature) {
+            if (feature.properties['sty 24'] >= 0.000000 && feature.properties['sty 24'] <= 0.001000 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['sty 24'] >= 0.001000 && feature.properties['sty 24'] <= 25.000000 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['sty 24'] >= 25.000000 && feature.properties['sty 24'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['sty 24'] >= 50.000000 && feature.properties['sty 24'] <= 100.000000 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['sty 24'] >= 100.000000 && feature.properties['sty 24'] <= 200.000000 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,187,105,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['sty 24'] >= 200.000000 && feature.properties['sty 24'] <= 406.113333 ) {
+                return {
+                pane: 'pane_Stycze24_6',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,234,70,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Stycze24_6');
+        map.getPane('pane_Stycze24_6').style.zIndex = 406;
+        map.getPane('pane_Stycze24_6').style['mix-blend-mode'] = 'normal';
+        var layer_Stycze24_6 = new L.geoJson(json_Stycze24_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Stycze24_6',
+            layerName: 'layer_Stycze24_6',
+            pane: 'pane_Stycze24_6',
+            onEachFeature: pop_Stycze24_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Stycze24_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Stycze24_6);
+        function pop_ZmianaLutyStycze24_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Podmiot zbywający</th>\
+                        <td>' + (feature.properties['Podmiot zbywający'] !== null ? autolinker.link(feature.properties['Podmiot zbywający'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adres podmioty zbywającego</th>\
+                        <td>' + (feature.properties['Adres podmioty zbywającego'] !== null ? autolinker.link(feature.properties['Adres podmioty zbywającego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Odbiorca faktury</th>\
+                        <td>' + (feature.properties['Odbiorca faktury'] !== null ? autolinker.link(feature.properties['Odbiorca faktury'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lat</th>\
+                        <td>' + (feature.properties['Lat'] !== null ? autolinker.link(feature.properties['Lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Long</th>\
+                        <td>' + (feature.properties['Long'] !== null ? autolinker.link(feature.properties['Long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">mtm</th>\
+                        <td>' + (feature.properties['mtm'] !== null ? autolinker.link(feature.properties['mtm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_ZmianaLutyStycze24_7_0(feature) {
+            if (feature.properties['mtm'] >= -300.000000 && feature.properties['mtm'] <= -10.000000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -10.000000 && feature.properties['mtm'] <= -5.000000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(244,136,83,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -5.000000 && feature.properties['mtm'] <= -0.500000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,196,150,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -0.500000 && feature.properties['mtm'] <= 0.500000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,206,227,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 0.500000 && feature.properties['mtm'] <= 5.000000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(88,177,132,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 5.000000 && feature.properties['mtm'] <= 10.000000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,143,74,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 10.000000 && feature.properties['mtm'] <= 300.000000 ) {
+                return {
+                pane: 'pane_ZmianaLutyStycze24_7',
+                radius: 9.2,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,104,55,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_ZmianaLutyStycze24_7');
+        map.getPane('pane_ZmianaLutyStycze24_7').style.zIndex = 407;
+        map.getPane('pane_ZmianaLutyStycze24_7').style['mix-blend-mode'] = 'normal';
+        var layer_ZmianaLutyStycze24_7 = new L.geoJson(json_ZmianaLutyStycze24_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ZmianaLutyStycze24_7',
+            layerName: 'layer_ZmianaLutyStycze24_7',
+            pane: 'pane_ZmianaLutyStycze24_7',
+            onEachFeature: pop_ZmianaLutyStycze24_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ZmianaLutyStycze24_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ZmianaLutyStycze24_7);
+        function pop_Luty24_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Podmiot zbywający</th>\
+                        <td>' + (feature.properties['Podmiot zbywający'] !== null ? autolinker.link(feature.properties['Podmiot zbywający'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adres podmioty zbywającego</th>\
+                        <td>' + (feature.properties['Adres podmioty zbywającego'] !== null ? autolinker.link(feature.properties['Adres podmioty zbywającego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Odbiorca faktury</th>\
+                        <td>' + (feature.properties['Odbiorca faktury'] !== null ? autolinker.link(feature.properties['Odbiorca faktury'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lat</th>\
+                        <td>' + (feature.properties['Lat'] !== null ? autolinker.link(feature.properties['Lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Long</th>\
+                        <td>' + (feature.properties['Long'] !== null ? autolinker.link(feature.properties['Long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">lut 24</th>\
+                        <td>' + (feature.properties['lut 24'] !== null ? autolinker.link(feature.properties['lut 24'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Luty24_8_0(feature) {
+            if (feature.properties['lut 24'] >= 0.000000 && feature.properties['lut 24'] <= 0.001000 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['lut 24'] >= 0.001000 && feature.properties['lut 24'] <= 25.000000 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['lut 24'] >= 25.000000 && feature.properties['lut 24'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['lut 24'] >= 50.000000 && feature.properties['lut 24'] <= 100.000000 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['lut 24'] >= 100.000000 && feature.properties['lut 24'] <= 200.000000 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,187,105,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['lut 24'] >= 200.000000 && feature.properties['lut 24'] <= 406.113333 ) {
+                return {
+                pane: 'pane_Luty24_8',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,234,70,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Luty24_8');
+        map.getPane('pane_Luty24_8').style.zIndex = 408;
+        map.getPane('pane_Luty24_8').style['mix-blend-mode'] = 'normal';
+        var layer_Luty24_8 = new L.geoJson(json_Luty24_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Luty24_8',
+            layerName: 'layer_Luty24_8',
+            pane: 'pane_Luty24_8',
+            onEachFeature: pop_Luty24_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Luty24_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Luty24_8);
+        function pop_ZmianaMarzecLuty24_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Podmiot zbywający</th>\
+                        <td>' + (feature.properties['Podmiot zbywający'] !== null ? autolinker.link(feature.properties['Podmiot zbywający'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adres podmioty zbywającego</th>\
+                        <td>' + (feature.properties['Adres podmioty zbywającego'] !== null ? autolinker.link(feature.properties['Adres podmioty zbywającego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Odbiorca faktury</th>\
+                        <td>' + (feature.properties['Odbiorca faktury'] !== null ? autolinker.link(feature.properties['Odbiorca faktury'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lat</th>\
+                        <td>' + (feature.properties['Lat'] !== null ? autolinker.link(feature.properties['Lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Long</th>\
+                        <td>' + (feature.properties['Long'] !== null ? autolinker.link(feature.properties['Long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">mtm</th>\
+                        <td>' + (feature.properties['mtm'] !== null ? autolinker.link(feature.properties['mtm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_ZmianaMarzecLuty24_9_0(feature) {
+            if (feature.properties['mtm'] >= -300.000000 && feature.properties['mtm'] <= -10.000000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -10.000000 && feature.properties['mtm'] <= -5.000000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(244,136,83,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -5.000000 && feature.properties['mtm'] <= -0.500000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,196,150,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= -0.500000 && feature.properties['mtm'] <= 0.500000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(166,206,227,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 0.500000 && feature.properties['mtm'] <= 5.000000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(88,177,132,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 5.000000 && feature.properties['mtm'] <= 10.000000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,143,74,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['mtm'] >= 10.000000 && feature.properties['mtm'] <= 300.000000 ) {
+                return {
+                pane: 'pane_ZmianaMarzecLuty24_9',
+                radius: 9.200000000000001,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,104,55,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_ZmianaMarzecLuty24_9');
+        map.getPane('pane_ZmianaMarzecLuty24_9').style.zIndex = 409;
+        map.getPane('pane_ZmianaMarzecLuty24_9').style['mix-blend-mode'] = 'normal';
+        var layer_ZmianaMarzecLuty24_9 = new L.geoJson(json_ZmianaMarzecLuty24_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ZmianaMarzecLuty24_9',
+            layerName: 'layer_ZmianaMarzecLuty24_9',
+            pane: 'pane_ZmianaMarzecLuty24_9',
+            onEachFeature: pop_ZmianaMarzecLuty24_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ZmianaMarzecLuty24_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ZmianaMarzecLuty24_9);
+        map.addLayer(layer_ZmianaMarzecLuty24_9);
+        function pop_Marzec24_10(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Podmiot zbywający</th>\
+                        <td>' + (feature.properties['Podmiot zbywający'] !== null ? autolinker.link(feature.properties['Podmiot zbywający'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adres podmioty zbywającego</th>\
+                        <td>' + (feature.properties['Adres podmioty zbywającego'] !== null ? autolinker.link(feature.properties['Adres podmioty zbywającego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Odbiorca faktury</th>\
+                        <td>' + (feature.properties['Odbiorca faktury'] !== null ? autolinker.link(feature.properties['Odbiorca faktury'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Lat</th>\
+                        <td>' + (feature.properties['Lat'] !== null ? autolinker.link(feature.properties['Lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Long</th>\
+                        <td>' + (feature.properties['Long'] !== null ? autolinker.link(feature.properties['Long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">24-mar</th>\
+                        <td>' + (feature.properties['24-mar'] !== null ? autolinker.link(feature.properties['24-mar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Marzec24_10_0(feature) {
+            if (feature.properties['24-mar'] >= 0.000000 && feature.properties['24-mar'] <= 0.001000 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(0,32,77,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['24-mar'] >= 0.001000 && feature.properties['24-mar'] <= 25.000000 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(49,68,107,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['24-mar'] >= 25.000000 && feature.properties['24-mar'] <= 50.000000 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,105,112,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['24-mar'] >= 50.000000 && feature.properties['24-mar'] <= 100.000000 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(150,144,120,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['24-mar'] >= 100.000000 && feature.properties['24-mar'] <= 200.000000 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,187,105,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['24-mar'] >= 200.000000 && feature.properties['24-mar'] <= 406.113333 ) {
+                return {
+                pane: 'pane_Marzec24_10',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,234,70,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Marzec24_10');
+        map.getPane('pane_Marzec24_10').style.zIndex = 410;
+        map.getPane('pane_Marzec24_10').style['mix-blend-mode'] = 'normal';
+        var layer_Marzec24_10 = new L.geoJson(json_Marzec24_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Marzec24_10',
+            layerName: 'layer_Marzec24_10',
+            pane: 'pane_Marzec24_10',
+            onEachFeature: pop_Marzec24_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Marzec24_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Marzec24_10);
+        map.addLayer(layer_Marzec24_10);
             var title = new L.Control();
             title.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -647,9 +1576,14 @@
             title.addTo(map);
         var baseMaps = {};
         var overlaysTree = [
-            {label: 'Avg 4Q 2023<br /><table><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_01000.png" /></td><td>0 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_1002001.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_2003002.png" /></td><td>200 - 300</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_3004003.png" /></td><td>300 - 400</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_40040614.png" /></td><td>400 - 406,1</td></tr></table>', layer: layer_Avg4Q2023_5},
-            {label: 'Avg 1H 2023<br /><table><tr><td style="text-align: center;"><img src="legend/Avg1H2023_4_01000.png" /></td><td>0 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Avg1H2023_4_1002001.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Avg1H2023_4_2003002.png" /></td><td>200 - 300</td></tr><tr><td style="text-align: center;"><img src="legend/Avg1H2023_4_3003813.png" /></td><td>300 - 381</td></tr></table>', layer: layer_Avg1H2023_4},
-            {label: 'Avg FY 2023<br /><table><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_01000.png" /></td><td>0 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_1002001.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_2003002.png" /></td><td>200 - 300</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_3003423.png" /></td><td>300 - 342</td></tr></table>', layer: layer_AvgFY2023_3},
+            {label: 'Marzec 24<br /><table><tr><td style="text-align: center;"><img src="legend/Marzec24_10_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Marzec24_10_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/Marzec24_10_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/Marzec24_10_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Marzec24_10_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Marzec24_10_2005.png" /></td><td>>200</td></tr></table>', layer: layer_Marzec24_10},
+            {label: 'Zmiana Marzec/Luty 24<br /><table><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_100.png" /></td><td>>-10</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_1051.png" /></td><td>-10 - -5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_5052.png" /></td><td>-5 - -0,5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_05053.png" /></td><td>-0,5 - 0,5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_0554.png" /></td><td>0,5 - 5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_5105.png" /></td><td>5 - 10</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaMarzecLuty24_9_106.png" /></td><td>>10</td></tr></table>', layer: layer_ZmianaMarzecLuty24_9},
+            {label: 'Luty 24<br /><table><tr><td style="text-align: center;"><img src="legend/Luty24_8_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Luty24_8_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/Luty24_8_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/Luty24_8_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Luty24_8_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Luty24_8_2005.png" /></td><td>>200</td></tr></table>', layer: layer_Luty24_8},
+            {label: 'Zmiana Luty/Styczeń 24<br /><table><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_100.png" /></td><td>>-10</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_1051.png" /></td><td>-10 - -5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_5052.png" /></td><td>-5 - -0,5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_05053.png" /></td><td>-0,5 - 0,5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_0554.png" /></td><td>0,5 - 5</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_5105.png" /></td><td>5 - 10</td></tr><tr><td style="text-align: center;"><img src="legend/ZmianaLutyStycze24_7_106.png" /></td><td>>10</td></tr></table>', layer: layer_ZmianaLutyStycze24_7},
+            {label: 'Styczeń 24<br /><table><tr><td style="text-align: center;"><img src="legend/Stycze24_6_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Stycze24_6_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/Stycze24_6_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/Stycze24_6_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Stycze24_6_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Stycze24_6_2005.png" /></td><td>>200</td></tr></table>', layer: layer_Stycze24_6},
+            {label: 'Avg 4Q 2023<br /><table><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Avg4Q2023_5_2005.png" /></td><td>>200</td></tr></table>', layer: layer_Avg4Q2023_5},
+            {label: 'Avg 2H 2023<br /><table><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/Avg2H2023_4_2005.png" /></td><td>>200</td></tr></table>', layer: layer_Avg2H2023_4},
+            {label: 'Avg FY 2023<br /><table><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_251.png" /></td><td>< 25</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_25502.png" /></td><td>25 - 50</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_501003.png" /></td><td>50 - 100</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_1002004.png" /></td><td>100 - 200</td></tr><tr><td style="text-align: center;"><img src="legend/AvgFY2023_3_2005.png" /></td><td>>200</td></tr></table>', layer: layer_AvgFY2023_3},
             {label: '<img src="legend/Zaklad_2.png" /> Zaklad', layer: layer_Zaklad_2},
             {label: '60min<br /><table><tr><td style="text-align: center;"><img src="legend/60min_1_60min0.png" /></td><td>60 min</td></tr></table>', layer: layer_60min_1},
             {label: "Mapa", layer: layer_Mapa_0},]
@@ -664,6 +1598,147 @@
         });
         lay.addTo(map);
         setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"mtm": "real"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_mtm = document.createElement("div");
+            div_mtm.id = "div_mtm";
+            div_mtm.className = "slider";
+            document.getElementById("menu").appendChild(div_mtm);
+            var lab_mtm = document.createElement('div');
+            lab_mtm.innerHTML  = 'mtm: <span id="val_mtm"></span>';
+            lab_mtm.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_mtm);
+            var reset_mtm = document.createElement('div');
+            reset_mtm.innerHTML = 'clear filter';
+            reset_mtm.className = 'filterlabel';
+            lab_mtm.className = 'filterlabel';
+            reset_mtm.onclick = function() {
+                sel_mtm.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_mtm);
+            var sel_mtm = document.getElementById('div_mtm');
+            noUiSlider.create(sel_mtm, {
+                connect: true,
+                start: [-95.3, 93.6],
+                range: {
+                min: -95.3,
+                max: 93.6
+                }
+            });
+            sel_mtm.noUiSlider.on('update', function (values) {
+            val_mtm = document.getElementById('val_mtm');
+            val_mtm.innerHTML = values.join(' - ');
+                filterFunc()
+            });
         </script>
     </body>
 </html>
